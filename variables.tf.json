@@ -1,0 +1,1293 @@
+{
+  "variable": {
+    "enable_all_endpoints": {
+      "type": "bool",
+      "default": "false",
+      "description": "setting this to true enables all endpoints provided by this module with default settings."
+    },
+    "vpc_id": {
+      "type": "string",
+      "description": "ID for the VPC that endpoints will be deployed into"
+    },
+    "route_table_ids": {
+      "type": "list(string)",
+      "default": [],
+      "description": "One or more route table IDs. Only applicable for endpoints of type Gateway"
+    },
+    "subnet_ids": {
+      "type": "list(string)",
+      "default": [],
+      "description": "The ID of one or more subnets in which to create a network interface for endpoints. Only applicable for endpoints of type GatewayLoadBalancer and Interface."
+    },
+    "security_group_ids": {
+      "type": "list(string)",
+      "default": [],
+      "description": "The ID of one or more security groups to associate with the endpoint's network interface. Required for endpoints of type Interface."
+    },
+    "private_dns_enabled": {
+      "type": "bool",
+      "default": false,
+      "description": "Whether or not to associate a private hosted zone with the specified VPC. Only applicable for endpoints of type Interface."
+    },
+    "tags": {
+      "type": "map(string)",
+      "default": {},
+      "description": "A map of tags to assign to the endpoints. If configured with a provider default_tags configuration block present, tags with matching keys will overwrite those defined at the module-level."
+    },
+    "sagemaker_notebook_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the sagemaker_notebook Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "sagemaker_notebook_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable sagemaker_notebook Interface endpoint.",
+      "default": false
+    },
+    "sagemaker_studio_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the sagemaker_studio Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "sagemaker_studio_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable sagemaker_studio Interface endpoint.",
+      "default": false
+    },
+    "s3-global_accesspoint_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the s3-global_accesspoint Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "s3-global_accesspoint_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable s3-global_accesspoint Interface endpoint.",
+      "default": false
+    },
+    "access-analyzer_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the access-analyzer Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "access-analyzer_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable access-analyzer Interface endpoint.",
+      "default": false
+    },
+    "acm-pca_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the acm-pca Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "acm-pca_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable acm-pca Interface endpoint.",
+      "default": false
+    },
+    "airflow_api_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the airflow_api Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "airflow_api_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable airflow_api Interface endpoint.",
+      "default": false
+    },
+    "airflow_env_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the airflow_env Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "airflow_env_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable airflow_env Interface endpoint.",
+      "default": false
+    },
+    "airflow_ops_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the airflow_ops Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "airflow_ops_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable airflow_ops Interface endpoint.",
+      "default": false
+    },
+    "app-integrations_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the app-integrations Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "app-integrations_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable app-integrations Interface endpoint.",
+      "default": false
+    },
+    "application-autoscaling_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the application-autoscaling Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "application-autoscaling_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable application-autoscaling Interface endpoint.",
+      "default": false
+    },
+    "appmesh-envoy-management_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable appmesh-envoy-management Interface endpoint.",
+      "default": false
+    },
+    "apprunner_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the apprunner Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "apprunner_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable apprunner Interface endpoint.",
+      "default": false
+    },
+    "appstream_api_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable appstream_api Interface endpoint.",
+      "default": false
+    },
+    "appstream_streaming_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable appstream_streaming Interface endpoint.",
+      "default": false
+    },
+    "aps-workspaces_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable aps-workspaces Interface endpoint.",
+      "default": false
+    },
+    "athena_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the athena Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "athena_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable athena Interface endpoint.",
+      "default": false
+    },
+    "auditmanager_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the auditmanager Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "auditmanager_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable auditmanager Interface endpoint.",
+      "default": false
+    },
+    "autoscaling_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the autoscaling Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "autoscaling_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable autoscaling Interface endpoint.",
+      "default": false
+    },
+    "autoscaling-plans_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the autoscaling-plans Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "autoscaling-plans_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable autoscaling-plans Interface endpoint.",
+      "default": false
+    },
+    "awsconnector_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable awsconnector Interface endpoint.",
+      "default": false
+    },
+    "braket_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the braket Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "braket_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable braket Interface endpoint.",
+      "default": false
+    },
+    "cassandra_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the cassandra Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "cassandra_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable cassandra Interface endpoint.",
+      "default": false
+    },
+    "cassandra-fips_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the cassandra-fips Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "cassandra-fips_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable cassandra-fips Interface endpoint.",
+      "default": false
+    },
+    "clouddirectory_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the clouddirectory Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "clouddirectory_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable clouddirectory Interface endpoint.",
+      "default": false
+    },
+    "cloudformation_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable cloudformation Interface endpoint.",
+      "default": false
+    },
+    "cloudhsmv2_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the cloudhsmv2 Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "cloudhsmv2_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable cloudhsmv2 Interface endpoint.",
+      "default": false
+    },
+    "cloudtrail_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable cloudtrail Interface endpoint.",
+      "default": false
+    },
+    "codeartifact_api_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the codeartifact_api Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "codeartifact_api_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable codeartifact_api Interface endpoint.",
+      "default": false
+    },
+    "codeartifact_repositories_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the codeartifact_repositories Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "codeartifact_repositories_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable codeartifact_repositories Interface endpoint.",
+      "default": false
+    },
+    "codebuild_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the codebuild Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "codebuild_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable codebuild Interface endpoint.",
+      "default": false
+    },
+    "codebuild-fips_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the codebuild-fips Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "codebuild-fips_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable codebuild-fips Interface endpoint.",
+      "default": false
+    },
+    "codecommit_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the codecommit Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "codecommit_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable codecommit Interface endpoint.",
+      "default": false
+    },
+    "codecommit-fips_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the codecommit-fips Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "codecommit-fips_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable codecommit-fips Interface endpoint.",
+      "default": false
+    },
+    "codedeploy_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the codedeploy Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "codedeploy_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable codedeploy Interface endpoint.",
+      "default": false
+    },
+    "codedeploy-commands-secure_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the codedeploy-commands-secure Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "codedeploy-commands-secure_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable codedeploy-commands-secure Interface endpoint.",
+      "default": false
+    },
+    "codeguru-profiler_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable codeguru-profiler Interface endpoint.",
+      "default": false
+    },
+    "codeguru-reviewer_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable codeguru-reviewer Interface endpoint.",
+      "default": false
+    },
+    "codepipeline_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable codepipeline Interface endpoint.",
+      "default": false
+    },
+    "codestar-connections_api_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the codestar-connections_api Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "codestar-connections_api_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable codestar-connections_api Interface endpoint.",
+      "default": false
+    },
+    "comprehend_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the comprehend Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "comprehend_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable comprehend Interface endpoint.",
+      "default": false
+    },
+    "comprehendmedical_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the comprehendmedical Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "comprehendmedical_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable comprehendmedical Interface endpoint.",
+      "default": false
+    },
+    "config_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the config Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "config_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable config Interface endpoint.",
+      "default": false
+    },
+    "databrew_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the databrew Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "databrew_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable databrew Interface endpoint.",
+      "default": false
+    },
+    "dataexchange_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the dataexchange Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "dataexchange_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable dataexchange Interface endpoint.",
+      "default": false
+    },
+    "datasync_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable datasync Interface endpoint.",
+      "default": false
+    },
+    "devops-guru_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the devops-guru Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "devops-guru_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable devops-guru Interface endpoint.",
+      "default": false
+    },
+    "dms_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the dms Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "dms_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable dms Interface endpoint.",
+      "default": false
+    },
+    "dms-fips_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the dms-fips Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "dms-fips_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable dms-fips Interface endpoint.",
+      "default": false
+    },
+    "ebs_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable ebs Interface endpoint.",
+      "default": false
+    },
+    "ec2_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the ec2 Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "ec2_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable ec2 Interface endpoint.",
+      "default": false
+    },
+    "ec2messages_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the ec2messages Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "ec2messages_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable ec2messages Interface endpoint.",
+      "default": false
+    },
+    "ecr_api_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the ecr_api Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "ecr_api_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable ecr_api Interface endpoint.",
+      "default": false
+    },
+    "ecr_dkr_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the ecr_dkr Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "ecr_dkr_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable ecr_dkr Interface endpoint.",
+      "default": false
+    },
+    "ecs_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the ecs Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "ecs_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable ecs Interface endpoint.",
+      "default": false
+    },
+    "ecs-agent_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the ecs-agent Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "ecs-agent_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable ecs-agent Interface endpoint.",
+      "default": false
+    },
+    "ecs-telemetry_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the ecs-telemetry Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "ecs-telemetry_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable ecs-telemetry Interface endpoint.",
+      "default": false
+    },
+    "elastic-inference_runtime_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable elastic-inference_runtime Interface endpoint.",
+      "default": false
+    },
+    "elasticbeanstalk_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the elasticbeanstalk Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "elasticbeanstalk_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable elasticbeanstalk Interface endpoint.",
+      "default": false
+    },
+    "elasticbeanstalk-health_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the elasticbeanstalk-health Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "elasticbeanstalk-health_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable elasticbeanstalk-health Interface endpoint.",
+      "default": false
+    },
+    "elasticfilesystem_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the elasticfilesystem Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "elasticfilesystem_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable elasticfilesystem Interface endpoint.",
+      "default": false
+    },
+    "elasticfilesystem-fips_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the elasticfilesystem-fips Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "elasticfilesystem-fips_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable elasticfilesystem-fips Interface endpoint.",
+      "default": false
+    },
+    "elasticloadbalancing_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the elasticloadbalancing Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "elasticloadbalancing_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable elasticloadbalancing Interface endpoint.",
+      "default": false
+    },
+    "elasticmapreduce_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the elasticmapreduce Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "elasticmapreduce_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable elasticmapreduce Interface endpoint.",
+      "default": false
+    },
+    "email-smtp_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable email-smtp Interface endpoint.",
+      "default": false
+    },
+    "emr-containers_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the emr-containers Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "emr-containers_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable emr-containers Interface endpoint.",
+      "default": false
+    },
+    "events_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the events Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "events_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable events Interface endpoint.",
+      "default": false
+    },
+    "execute-api_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the execute-api Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "execute-api_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable execute-api Interface endpoint.",
+      "default": false
+    },
+    "finspace_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the finspace Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "finspace_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable finspace Interface endpoint.",
+      "default": false
+    },
+    "finspace-api_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the finspace-api Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "finspace-api_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable finspace-api Interface endpoint.",
+      "default": false
+    },
+    "fis_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the fis Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "fis_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable fis Interface endpoint.",
+      "default": false
+    },
+    "frauddetector_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the frauddetector Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "frauddetector_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable frauddetector Interface endpoint.",
+      "default": false
+    },
+    "git-codecommit_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the git-codecommit Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "git-codecommit_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable git-codecommit Interface endpoint.",
+      "default": false
+    },
+    "git-codecommit-fips_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the git-codecommit-fips Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "git-codecommit-fips_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable git-codecommit-fips Interface endpoint.",
+      "default": false
+    },
+    "glue_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the glue Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "glue_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable glue Interface endpoint.",
+      "default": false
+    },
+    "greengrass_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the greengrass Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "greengrass_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable greengrass Interface endpoint.",
+      "default": false
+    },
+    "groundstation_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the groundstation Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "groundstation_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable groundstation Interface endpoint.",
+      "default": false
+    },
+    "healthlake_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the healthlake Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "healthlake_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable healthlake Interface endpoint.",
+      "default": false
+    },
+    "imagebuilder_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the imagebuilder Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "imagebuilder_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable imagebuilder Interface endpoint.",
+      "default": false
+    },
+    "iot_data_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable iot_data Interface endpoint.",
+      "default": false
+    },
+    "iotsitewise_api_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the iotsitewise_api Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "iotsitewise_api_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable iotsitewise_api Interface endpoint.",
+      "default": false
+    },
+    "iotsitewise_data_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the iotsitewise_data Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "iotsitewise_data_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable iotsitewise_data Interface endpoint.",
+      "default": false
+    },
+    "iotwireless_api_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable iotwireless_api Interface endpoint.",
+      "default": false
+    },
+    "kendra_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the kendra Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "kendra_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable kendra Interface endpoint.",
+      "default": false
+    },
+    "kinesis-firehose_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the kinesis-firehose Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "kinesis-firehose_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable kinesis-firehose Interface endpoint.",
+      "default": false
+    },
+    "kinesis-streams_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the kinesis-streams Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "kinesis-streams_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable kinesis-streams Interface endpoint.",
+      "default": false
+    },
+    "kms_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the kms Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "kms_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable kms Interface endpoint.",
+      "default": false
+    },
+    "lambda_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the lambda Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "lambda_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable lambda Interface endpoint.",
+      "default": false
+    },
+    "license-manager_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the license-manager Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "license-manager_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable license-manager Interface endpoint.",
+      "default": false
+    },
+    "license-manager-fips_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the license-manager-fips Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "license-manager-fips_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable license-manager-fips Interface endpoint.",
+      "default": false
+    },
+    "logs_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the logs Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "logs_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable logs Interface endpoint.",
+      "default": false
+    },
+    "lookoutequipment_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the lookoutequipment Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "lookoutequipment_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable lookoutequipment Interface endpoint.",
+      "default": false
+    },
+    "lookoutmetrics_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the lookoutmetrics Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "lookoutmetrics_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable lookoutmetrics Interface endpoint.",
+      "default": false
+    },
+    "lookoutvision_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the lookoutvision Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "lookoutvision_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable lookoutvision Interface endpoint.",
+      "default": false
+    },
+    "lorawan_cups_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable lorawan_cups Interface endpoint.",
+      "default": false
+    },
+    "lorawan_lns_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable lorawan_lns Interface endpoint.",
+      "default": false
+    },
+    "macie2_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the macie2 Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "macie2_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable macie2 Interface endpoint.",
+      "default": false
+    },
+    "mgn_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the mgn Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "mgn_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable mgn Interface endpoint.",
+      "default": false
+    },
+    "monitoring_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the monitoring Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "monitoring_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable monitoring Interface endpoint.",
+      "default": false
+    },
+    "nimble_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the nimble Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "nimble_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable nimble Interface endpoint.",
+      "default": false
+    },
+    "profile_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the profile Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "profile_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable profile Interface endpoint.",
+      "default": false
+    },
+    "proton_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the proton Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "proton_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable proton Interface endpoint.",
+      "default": false
+    },
+    "qldb_session_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the qldb_session Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "qldb_session_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable qldb_session Interface endpoint.",
+      "default": false
+    },
+    "rds_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the rds Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "rds_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable rds Interface endpoint.",
+      "default": false
+    },
+    "rds-data_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the rds-data Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "rds-data_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable rds-data Interface endpoint.",
+      "default": false
+    },
+    "redshift_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the redshift Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "redshift_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable redshift Interface endpoint.",
+      "default": false
+    },
+    "redshift-data_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable redshift-data Interface endpoint.",
+      "default": false
+    },
+    "redshift-fips_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the redshift-fips Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "redshift-fips_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable redshift-fips Interface endpoint.",
+      "default": false
+    },
+    "rekognition_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the rekognition Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "rekognition_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable rekognition Interface endpoint.",
+      "default": false
+    },
+    "rekognition-fips_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the rekognition-fips Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "rekognition-fips_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable rekognition-fips Interface endpoint.",
+      "default": false
+    },
+    "s3_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the s3 Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "s3_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable s3 Interface endpoint.",
+      "default": false
+    },
+    "sagemaker_api_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the sagemaker_api Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "sagemaker_api_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable sagemaker_api Interface endpoint.",
+      "default": false
+    },
+    "sagemaker_featurestore-runtime_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the sagemaker_featurestore-runtime Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "sagemaker_featurestore-runtime_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable sagemaker_featurestore-runtime Interface endpoint.",
+      "default": false
+    },
+    "sagemaker_runtime_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the sagemaker_runtime Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "sagemaker_runtime_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable sagemaker_runtime Interface endpoint.",
+      "default": false
+    },
+    "sagemaker_runtime-fips_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable sagemaker_runtime-fips Interface endpoint.",
+      "default": false
+    },
+    "secretsmanager_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the secretsmanager Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "secretsmanager_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable secretsmanager Interface endpoint.",
+      "default": false
+    },
+    "servicecatalog_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable servicecatalog Interface endpoint.",
+      "default": false
+    },
+    "servicecatalog-appregistry_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the servicecatalog-appregistry Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "servicecatalog-appregistry_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable servicecatalog-appregistry Interface endpoint.",
+      "default": false
+    },
+    "sms_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable sms Interface endpoint.",
+      "default": false
+    },
+    "sms-fips_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable sms-fips Interface endpoint.",
+      "default": false
+    },
+    "snow-device-management_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the snow-device-management Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "snow-device-management_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable snow-device-management Interface endpoint.",
+      "default": false
+    },
+    "sns_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the sns Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "sns_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable sns Interface endpoint.",
+      "default": false
+    },
+    "sqs_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the sqs Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "sqs_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable sqs Interface endpoint.",
+      "default": false
+    },
+    "ssm_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the ssm Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "ssm_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable ssm Interface endpoint.",
+      "default": false
+    },
+    "ssmmessages_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the ssmmessages Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "ssmmessages_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable ssmmessages Interface endpoint.",
+      "default": false
+    },
+    "states_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the states Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "states_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable states Interface endpoint.",
+      "default": false
+    },
+    "storagegateway_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable storagegateway Interface endpoint.",
+      "default": false
+    },
+    "sts_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the sts Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "sts_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable sts Interface endpoint.",
+      "default": false
+    },
+    "synthetics_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the synthetics Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "synthetics_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable synthetics Interface endpoint.",
+      "default": false
+    },
+    "textract_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the textract Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "textract_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable textract Interface endpoint.",
+      "default": false
+    },
+    "textract-fips_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the textract-fips Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "textract-fips_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable textract-fips Interface endpoint.",
+      "default": false
+    },
+    "transcribe_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the transcribe Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "transcribe_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable transcribe Interface endpoint.",
+      "default": false
+    },
+    "transcribestreaming_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the transcribestreaming Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "transcribestreaming_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable transcribestreaming Interface endpoint.",
+      "default": false
+    },
+    "transfer_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable transfer Interface endpoint.",
+      "default": false
+    },
+    "transfer_server_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable transfer_server Interface endpoint.",
+      "default": false
+    },
+    "workspaces_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the workspaces Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "workspaces_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable workspaces Interface endpoint.",
+      "default": false
+    },
+    "xray_interface_policy": {
+      "type": "string",
+      "description": "A policy to attach to the xray Interface endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "xray_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable xray Interface endpoint.",
+      "default": false
+    },
+    "vpce_us-east-1_vpce-svc-0d5a9851843fed971_interface_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable vpce_us-east-1_vpce-svc-0d5a9851843fed971 Interface endpoint.",
+      "default": false
+    },
+    "dynamodb_gateway_policy": {
+      "type": "string",
+      "description": "A policy to attach to the dynamodb Gateway endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "dynamodb_gateway_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable dynamodb Gateway endpoint.",
+      "default": false
+    },
+    "s3_gateway_policy": {
+      "type": "string",
+      "description": "A policy to attach to the s3 Gateway endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
+      "default": null
+    },
+    "s3_gateway_enabled": {
+      "type": "bool",
+      "description": "Set to true to enable s3 Gateway endpoint.",
+      "default": false
+    }
+  }
+}
