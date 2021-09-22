@@ -88,7 +88,7 @@ def generate_tf_json(endpoints):
         tf_var_name = f"enabled_{ep_type.lower()}_endpoints"
         tf_policy_var = f"{ep_type.lower()}_endpoint_policies"
         regex = regex_builder(available_endpoints[ep_type])
-        tf_variables[tf_var_name]["description"] = tf_variables[tf_var_name]["description"] + "\n\nAvailable endpoints:\n* " + "\n* ".join(sorted(available_endpoints[ep_type]))
+        tf_variables[tf_var_name]["description"] = tf_variables[tf_var_name]["description"] + "Available endpoints:" + ", ".join(sorted(available_endpoints[ep_type]))
         tf_variables[tf_var_name]["validation"] = {
             "condition": """${var.%s == [] ? true : can([for s in var.%s : regex("%s", s)])}""" % (tf_var_name, tf_var_name, regex),
             "error_message": f"Endpoint names can only contain one or more of the following {sorted(available_endpoints[ep_type])}."

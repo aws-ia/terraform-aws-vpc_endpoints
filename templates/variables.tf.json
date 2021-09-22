@@ -47,12 +47,12 @@
     "enabled_interface_endpoints": {
       "type": "list(string)",
       "default": [],
-      "description": "List of shortened interface endpoint names that are to be enabled. Shortened names are the endpoint name excluding the dns style prefix, so \"com.amazonaws.us-east-1.s3\" would be entered as \"s3\", the region will be pulled from your provider configuration."
+      "description": "List of shortened interface endpoint names that are to be enabled. Shortened names are the endpoint name excluding the dns style prefix, so \"com.amazonaws.us-east-1.s3\" would be entered as \"s3\". The region will be pulled from your provider configuration."
     },
     "enabled_gateway_endpoints": {
       "type": "list(string)",
       "default": [],
-      "description": "List of shortened gateway endpoint names that are to be enabled. Shortened names are the endpoint name excluding the dns style prefix, so \"com.amazonaws.us-east-1.s3\" would be entered as \"s3\", the region will be pulled from your provider configuration."
+      "description": "List of shortened gateway endpoint names that are to be enabled. Shortened names are the endpoint name excluding the dns style prefix, so \"com.amazonaws.us-east-1.s3\" would be entered as \"s3\". The region will be pulled from your provider configuration."
     }
   }
 }
