@@ -2,7 +2,7 @@
   "resource": {
     "aws_vpc_endpoint": {
       "sagemaker_notebook_interface": {
-        "count": "${var.sagemaker_notebook_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"sagemaker_notebook\") ? 1 : 0}",
         "service_name": "${replace(\"aws.sagemaker.<REGION>.notebook\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -10,10 +10,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.sagemaker_notebook_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.sagemaker_notebook), null)}"
       },
       "sagemaker_studio_interface": {
-        "count": "${var.sagemaker_studio_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"sagemaker_studio\") ? 1 : 0}",
         "service_name": "${replace(\"aws.sagemaker.<REGION>.studio\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -21,10 +21,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.sagemaker_studio_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.sagemaker_studio), null)}"
       },
       "s3-global_accesspoint_interface": {
-        "count": "${var.s3-global_accesspoint_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"s3-global_accesspoint\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.s3-global.accesspoint\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -32,10 +32,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.s3-global_accesspoint_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.s3-global_accesspoint), null)}"
       },
       "access-analyzer_interface": {
-        "count": "${var.access-analyzer_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"access-analyzer\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.access-analyzer\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -43,10 +43,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.access-analyzer_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.access-analyzer), null)}"
       },
       "acm-pca_interface": {
-        "count": "${var.acm-pca_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"acm-pca\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.acm-pca\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -54,10 +54,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.acm-pca_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.acm-pca), null)}"
       },
       "airflow_api_interface": {
-        "count": "${var.airflow_api_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"airflow_api\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.airflow.api\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -65,10 +65,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.airflow_api_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.airflow_api), null)}"
       },
       "airflow_env_interface": {
-        "count": "${var.airflow_env_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"airflow_env\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.airflow.env\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -76,10 +76,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.airflow_env_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.airflow_env), null)}"
       },
       "airflow_ops_interface": {
-        "count": "${var.airflow_ops_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"airflow_ops\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.airflow.ops\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -87,10 +87,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.airflow_ops_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.airflow_ops), null)}"
       },
       "app-integrations_interface": {
-        "count": "${var.app-integrations_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"app-integrations\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.app-integrations\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -98,10 +98,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.app-integrations_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.app-integrations), null)}"
       },
       "application-autoscaling_interface": {
-        "count": "${var.application-autoscaling_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"application-autoscaling\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.application-autoscaling\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -109,10 +109,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.application-autoscaling_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.application-autoscaling), null)}"
       },
       "appmesh-envoy-management_interface": {
-        "count": "${var.appmesh-envoy-management_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"appmesh-envoy-management\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.appmesh-envoy-management\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -122,7 +122,7 @@
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}"
       },
       "apprunner_interface": {
-        "count": "${var.apprunner_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"apprunner\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.apprunner\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -130,10 +130,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.apprunner_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.apprunner), null)}"
       },
       "appstream_api_interface": {
-        "count": "${var.appstream_api_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"appstream_api\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.appstream.api\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -143,7 +143,7 @@
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}"
       },
       "appstream_streaming_interface": {
-        "count": "${var.appstream_streaming_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"appstream_streaming\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.appstream.streaming\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -153,7 +153,7 @@
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}"
       },
       "aps-workspaces_interface": {
-        "count": "${var.aps-workspaces_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"aps-workspaces\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.aps-workspaces\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -163,7 +163,7 @@
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}"
       },
       "athena_interface": {
-        "count": "${var.athena_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"athena\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.athena\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -171,10 +171,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.athena_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.athena), null)}"
       },
       "auditmanager_interface": {
-        "count": "${var.auditmanager_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"auditmanager\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.auditmanager\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -182,10 +182,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.auditmanager_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.auditmanager), null)}"
       },
       "autoscaling_interface": {
-        "count": "${var.autoscaling_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"autoscaling\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.autoscaling\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -193,10 +193,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.autoscaling_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.autoscaling), null)}"
       },
       "autoscaling-plans_interface": {
-        "count": "${var.autoscaling-plans_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"autoscaling-plans\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.autoscaling-plans\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -204,10 +204,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.autoscaling-plans_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.autoscaling-plans), null)}"
       },
       "awsconnector_interface": {
-        "count": "${var.awsconnector_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"awsconnector\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.awsconnector\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -217,7 +217,7 @@
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}"
       },
       "braket_interface": {
-        "count": "${var.braket_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"braket\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.braket\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -225,10 +225,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.braket_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.braket), null)}"
       },
       "cassandra_interface": {
-        "count": "${var.cassandra_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"cassandra\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.cassandra\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -236,10 +236,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.cassandra_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.cassandra), null)}"
       },
       "cassandra-fips_interface": {
-        "count": "${var.cassandra-fips_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"cassandra-fips\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.cassandra-fips\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -247,10 +247,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.cassandra-fips_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.cassandra-fips), null)}"
       },
       "clouddirectory_interface": {
-        "count": "${var.clouddirectory_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"clouddirectory\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.clouddirectory\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -258,10 +258,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.clouddirectory_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.clouddirectory), null)}"
       },
       "cloudformation_interface": {
-        "count": "${var.cloudformation_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"cloudformation\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.cloudformation\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -271,7 +271,7 @@
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}"
       },
       "cloudhsmv2_interface": {
-        "count": "${var.cloudhsmv2_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"cloudhsmv2\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.cloudhsmv2\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -279,10 +279,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.cloudhsmv2_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.cloudhsmv2), null)}"
       },
       "cloudtrail_interface": {
-        "count": "${var.cloudtrail_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"cloudtrail\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.cloudtrail\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -292,7 +292,7 @@
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}"
       },
       "codeartifact_api_interface": {
-        "count": "${var.codeartifact_api_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"codeartifact_api\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.codeartifact.api\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -300,10 +300,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.codeartifact_api_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.codeartifact_api), null)}"
       },
       "codeartifact_repositories_interface": {
-        "count": "${var.codeartifact_repositories_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"codeartifact_repositories\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.codeartifact.repositories\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -311,10 +311,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.codeartifact_repositories_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.codeartifact_repositories), null)}"
       },
       "codebuild_interface": {
-        "count": "${var.codebuild_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"codebuild\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.codebuild\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -322,10 +322,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.codebuild_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.codebuild), null)}"
       },
       "codebuild-fips_interface": {
-        "count": "${var.codebuild-fips_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"codebuild-fips\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.codebuild-fips\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -333,10 +333,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.codebuild-fips_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.codebuild-fips), null)}"
       },
       "codecommit_interface": {
-        "count": "${var.codecommit_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"codecommit\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.codecommit\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -344,10 +344,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.codecommit_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.codecommit), null)}"
       },
       "codecommit-fips_interface": {
-        "count": "${var.codecommit-fips_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"codecommit-fips\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.codecommit-fips\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -355,10 +355,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.codecommit-fips_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.codecommit-fips), null)}"
       },
       "codedeploy_interface": {
-        "count": "${var.codedeploy_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"codedeploy\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.codedeploy\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -366,10 +366,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.codedeploy_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.codedeploy), null)}"
       },
       "codedeploy-commands-secure_interface": {
-        "count": "${var.codedeploy-commands-secure_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"codedeploy-commands-secure\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.codedeploy-commands-secure\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -377,10 +377,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.codedeploy-commands-secure_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.codedeploy-commands-secure), null)}"
       },
       "codeguru-profiler_interface": {
-        "count": "${var.codeguru-profiler_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"codeguru-profiler\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.codeguru-profiler\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -390,7 +390,7 @@
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}"
       },
       "codeguru-reviewer_interface": {
-        "count": "${var.codeguru-reviewer_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"codeguru-reviewer\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.codeguru-reviewer\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -400,7 +400,7 @@
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}"
       },
       "codepipeline_interface": {
-        "count": "${var.codepipeline_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"codepipeline\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.codepipeline\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -410,7 +410,7 @@
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}"
       },
       "codestar-connections_api_interface": {
-        "count": "${var.codestar-connections_api_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"codestar-connections_api\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.codestar-connections.api\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -418,10 +418,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.codestar-connections_api_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.codestar-connections_api), null)}"
       },
       "comprehend_interface": {
-        "count": "${var.comprehend_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"comprehend\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.comprehend\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -429,10 +429,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.comprehend_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.comprehend), null)}"
       },
       "comprehendmedical_interface": {
-        "count": "${var.comprehendmedical_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"comprehendmedical\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.comprehendmedical\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -440,10 +440,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.comprehendmedical_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.comprehendmedical), null)}"
       },
       "config_interface": {
-        "count": "${var.config_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"config\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.config\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -451,10 +451,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.config_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.config), null)}"
       },
       "databrew_interface": {
-        "count": "${var.databrew_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"databrew\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.databrew\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -462,10 +462,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.databrew_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.databrew), null)}"
       },
       "dataexchange_interface": {
-        "count": "${var.dataexchange_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"dataexchange\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.dataexchange\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -473,10 +473,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.dataexchange_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.dataexchange), null)}"
       },
       "datasync_interface": {
-        "count": "${var.datasync_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"datasync\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.datasync\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -486,7 +486,7 @@
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}"
       },
       "devops-guru_interface": {
-        "count": "${var.devops-guru_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"devops-guru\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.devops-guru\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -494,10 +494,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.devops-guru_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.devops-guru), null)}"
       },
       "dms_interface": {
-        "count": "${var.dms_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"dms\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.dms\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -505,10 +505,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.dms_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.dms), null)}"
       },
       "dms-fips_interface": {
-        "count": "${var.dms-fips_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"dms-fips\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.dms-fips\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -516,10 +516,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.dms-fips_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.dms-fips), null)}"
       },
       "ebs_interface": {
-        "count": "${var.ebs_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"ebs\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.ebs\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -529,7 +529,7 @@
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}"
       },
       "ec2_interface": {
-        "count": "${var.ec2_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"ec2\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.ec2\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -537,10 +537,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.ec2_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.ec2), null)}"
       },
       "ec2messages_interface": {
-        "count": "${var.ec2messages_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"ec2messages\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.ec2messages\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -548,10 +548,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.ec2messages_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.ec2messages), null)}"
       },
       "ecr_api_interface": {
-        "count": "${var.ecr_api_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"ecr_api\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.ecr.api\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -559,10 +559,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.ecr_api_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.ecr_api), null)}"
       },
       "ecr_dkr_interface": {
-        "count": "${var.ecr_dkr_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"ecr_dkr\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.ecr.dkr\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -570,10 +570,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.ecr_dkr_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.ecr_dkr), null)}"
       },
       "ecs_interface": {
-        "count": "${var.ecs_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"ecs\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.ecs\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -581,10 +581,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.ecs_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.ecs), null)}"
       },
       "ecs-agent_interface": {
-        "count": "${var.ecs-agent_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"ecs-agent\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.ecs-agent\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -592,10 +592,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.ecs-agent_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.ecs-agent), null)}"
       },
       "ecs-telemetry_interface": {
-        "count": "${var.ecs-telemetry_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"ecs-telemetry\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.ecs-telemetry\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -603,10 +603,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.ecs-telemetry_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.ecs-telemetry), null)}"
       },
       "elastic-inference_runtime_interface": {
-        "count": "${var.elastic-inference_runtime_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"elastic-inference_runtime\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.elastic-inference.runtime\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -616,7 +616,7 @@
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}"
       },
       "elasticbeanstalk_interface": {
-        "count": "${var.elasticbeanstalk_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"elasticbeanstalk\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.elasticbeanstalk\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -624,10 +624,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.elasticbeanstalk_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.elasticbeanstalk), null)}"
       },
       "elasticbeanstalk-health_interface": {
-        "count": "${var.elasticbeanstalk-health_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"elasticbeanstalk-health\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.elasticbeanstalk-health\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -635,10 +635,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.elasticbeanstalk-health_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.elasticbeanstalk-health), null)}"
       },
       "elasticfilesystem_interface": {
-        "count": "${var.elasticfilesystem_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"elasticfilesystem\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.elasticfilesystem\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -646,10 +646,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.elasticfilesystem_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.elasticfilesystem), null)}"
       },
       "elasticfilesystem-fips_interface": {
-        "count": "${var.elasticfilesystem-fips_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"elasticfilesystem-fips\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.elasticfilesystem-fips\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -657,10 +657,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.elasticfilesystem-fips_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.elasticfilesystem-fips), null)}"
       },
       "elasticloadbalancing_interface": {
-        "count": "${var.elasticloadbalancing_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"elasticloadbalancing\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.elasticloadbalancing\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -668,10 +668,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.elasticloadbalancing_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.elasticloadbalancing), null)}"
       },
       "elasticmapreduce_interface": {
-        "count": "${var.elasticmapreduce_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"elasticmapreduce\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.elasticmapreduce\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -679,10 +679,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.elasticmapreduce_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.elasticmapreduce), null)}"
       },
       "email-smtp_interface": {
-        "count": "${var.email-smtp_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"email-smtp\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.email-smtp\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -692,7 +692,7 @@
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}"
       },
       "emr-containers_interface": {
-        "count": "${var.emr-containers_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"emr-containers\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.emr-containers\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -700,10 +700,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.emr-containers_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.emr-containers), null)}"
       },
       "events_interface": {
-        "count": "${var.events_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"events\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.events\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -711,10 +711,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.events_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.events), null)}"
       },
       "execute-api_interface": {
-        "count": "${var.execute-api_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"execute-api\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.execute-api\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -722,10 +722,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.execute-api_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.execute-api), null)}"
       },
       "finspace_interface": {
-        "count": "${var.finspace_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"finspace\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.finspace\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -733,10 +733,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.finspace_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.finspace), null)}"
       },
       "finspace-api_interface": {
-        "count": "${var.finspace-api_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"finspace-api\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.finspace-api\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -744,10 +744,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.finspace-api_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.finspace-api), null)}"
       },
       "fis_interface": {
-        "count": "${var.fis_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"fis\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.fis\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -755,10 +755,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.fis_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.fis), null)}"
       },
       "frauddetector_interface": {
-        "count": "${var.frauddetector_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"frauddetector\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.frauddetector\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -766,10 +766,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.frauddetector_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.frauddetector), null)}"
       },
       "git-codecommit_interface": {
-        "count": "${var.git-codecommit_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"git-codecommit\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.git-codecommit\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -777,10 +777,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.git-codecommit_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.git-codecommit), null)}"
       },
       "git-codecommit-fips_interface": {
-        "count": "${var.git-codecommit-fips_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"git-codecommit-fips\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.git-codecommit-fips\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -788,10 +788,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.git-codecommit-fips_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.git-codecommit-fips), null)}"
       },
       "glue_interface": {
-        "count": "${var.glue_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"glue\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.glue\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -799,10 +799,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.glue_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.glue), null)}"
       },
       "greengrass_interface": {
-        "count": "${var.greengrass_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"greengrass\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.greengrass\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -810,10 +810,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.greengrass_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.greengrass), null)}"
       },
       "groundstation_interface": {
-        "count": "${var.groundstation_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"groundstation\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.groundstation\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -821,10 +821,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.groundstation_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.groundstation), null)}"
       },
       "healthlake_interface": {
-        "count": "${var.healthlake_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"healthlake\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.healthlake\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -832,10 +832,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.healthlake_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.healthlake), null)}"
       },
       "imagebuilder_interface": {
-        "count": "${var.imagebuilder_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"imagebuilder\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.imagebuilder\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -843,10 +843,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.imagebuilder_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.imagebuilder), null)}"
       },
       "iot_data_interface": {
-        "count": "${var.iot_data_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"iot_data\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.iot.data\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -856,7 +856,7 @@
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}"
       },
       "iotsitewise_api_interface": {
-        "count": "${var.iotsitewise_api_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"iotsitewise_api\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.iotsitewise.api\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -864,10 +864,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.iotsitewise_api_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.iotsitewise_api), null)}"
       },
       "iotsitewise_data_interface": {
-        "count": "${var.iotsitewise_data_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"iotsitewise_data\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.iotsitewise.data\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -875,10 +875,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.iotsitewise_data_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.iotsitewise_data), null)}"
       },
       "iotwireless_api_interface": {
-        "count": "${var.iotwireless_api_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"iotwireless_api\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.iotwireless.api\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -888,7 +888,7 @@
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}"
       },
       "kendra_interface": {
-        "count": "${var.kendra_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"kendra\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.kendra\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -896,10 +896,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.kendra_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.kendra), null)}"
       },
       "kinesis-firehose_interface": {
-        "count": "${var.kinesis-firehose_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"kinesis-firehose\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.kinesis-firehose\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -907,10 +907,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.kinesis-firehose_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.kinesis-firehose), null)}"
       },
       "kinesis-streams_interface": {
-        "count": "${var.kinesis-streams_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"kinesis-streams\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.kinesis-streams\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -918,10 +918,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.kinesis-streams_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.kinesis-streams), null)}"
       },
       "kms_interface": {
-        "count": "${var.kms_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"kms\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.kms\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -929,10 +929,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.kms_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.kms), null)}"
       },
       "lambda_interface": {
-        "count": "${var.lambda_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"lambda\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.lambda\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -940,10 +940,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.lambda_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.lambda), null)}"
       },
       "license-manager_interface": {
-        "count": "${var.license-manager_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"license-manager\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.license-manager\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -951,10 +951,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.license-manager_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.license-manager), null)}"
       },
       "license-manager-fips_interface": {
-        "count": "${var.license-manager-fips_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"license-manager-fips\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.license-manager-fips\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -962,10 +962,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.license-manager-fips_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.license-manager-fips), null)}"
       },
       "logs_interface": {
-        "count": "${var.logs_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"logs\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.logs\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -973,10 +973,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.logs_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.logs), null)}"
       },
       "lookoutequipment_interface": {
-        "count": "${var.lookoutequipment_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"lookoutequipment\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.lookoutequipment\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -984,10 +984,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.lookoutequipment_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.lookoutequipment), null)}"
       },
       "lookoutmetrics_interface": {
-        "count": "${var.lookoutmetrics_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"lookoutmetrics\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.lookoutmetrics\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -995,10 +995,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.lookoutmetrics_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.lookoutmetrics), null)}"
       },
       "lookoutvision_interface": {
-        "count": "${var.lookoutvision_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"lookoutvision\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.lookoutvision\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -1006,10 +1006,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.lookoutvision_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.lookoutvision), null)}"
       },
       "lorawan_cups_interface": {
-        "count": "${var.lorawan_cups_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"lorawan_cups\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.lorawan.cups\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -1019,7 +1019,7 @@
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}"
       },
       "lorawan_lns_interface": {
-        "count": "${var.lorawan_lns_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"lorawan_lns\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.lorawan.lns\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -1029,7 +1029,7 @@
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}"
       },
       "macie2_interface": {
-        "count": "${var.macie2_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"macie2\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.macie2\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -1037,10 +1037,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.macie2_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.macie2), null)}"
       },
       "mgn_interface": {
-        "count": "${var.mgn_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"mgn\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.mgn\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -1048,10 +1048,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.mgn_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.mgn), null)}"
       },
       "monitoring_interface": {
-        "count": "${var.monitoring_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"monitoring\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.monitoring\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -1059,10 +1059,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.monitoring_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.monitoring), null)}"
       },
       "nimble_interface": {
-        "count": "${var.nimble_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"nimble\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.nimble\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -1070,10 +1070,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.nimble_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.nimble), null)}"
       },
       "profile_interface": {
-        "count": "${var.profile_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"profile\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.profile\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -1081,10 +1081,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.profile_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.profile), null)}"
       },
       "proton_interface": {
-        "count": "${var.proton_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"proton\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.proton\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -1092,10 +1092,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.proton_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.proton), null)}"
       },
       "qldb_session_interface": {
-        "count": "${var.qldb_session_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"qldb_session\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.qldb.session\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -1103,10 +1103,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.qldb_session_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.qldb_session), null)}"
       },
       "rds_interface": {
-        "count": "${var.rds_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"rds\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.rds\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -1114,10 +1114,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.rds_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.rds), null)}"
       },
       "rds-data_interface": {
-        "count": "${var.rds-data_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"rds-data\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.rds-data\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -1125,10 +1125,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.rds-data_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.rds-data), null)}"
       },
       "redshift_interface": {
-        "count": "${var.redshift_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"redshift\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.redshift\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -1136,10 +1136,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.redshift_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.redshift), null)}"
       },
       "redshift-data_interface": {
-        "count": "${var.redshift-data_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"redshift-data\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.redshift-data\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -1149,7 +1149,7 @@
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}"
       },
       "redshift-fips_interface": {
-        "count": "${var.redshift-fips_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"redshift-fips\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.redshift-fips\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -1157,10 +1157,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.redshift-fips_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.redshift-fips), null)}"
       },
       "rekognition_interface": {
-        "count": "${var.rekognition_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"rekognition\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.rekognition\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -1168,10 +1168,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.rekognition_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.rekognition), null)}"
       },
       "rekognition-fips_interface": {
-        "count": "${var.rekognition-fips_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"rekognition-fips\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.rekognition-fips\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -1179,10 +1179,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.rekognition-fips_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.rekognition-fips), null)}"
       },
       "s3_interface": {
-        "count": "${var.s3_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"s3\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.s3\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -1190,10 +1190,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.s3_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.s3), null)}"
       },
       "sagemaker_api_interface": {
-        "count": "${var.sagemaker_api_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"sagemaker_api\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.sagemaker.api\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -1201,10 +1201,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.sagemaker_api_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.sagemaker_api), null)}"
       },
       "sagemaker_featurestore-runtime_interface": {
-        "count": "${var.sagemaker_featurestore-runtime_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"sagemaker_featurestore-runtime\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.sagemaker.featurestore-runtime\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -1212,10 +1212,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.sagemaker_featurestore-runtime_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.sagemaker_featurestore-runtime), null)}"
       },
       "sagemaker_runtime_interface": {
-        "count": "${var.sagemaker_runtime_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"sagemaker_runtime\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.sagemaker.runtime\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -1223,10 +1223,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.sagemaker_runtime_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.sagemaker_runtime), null)}"
       },
       "sagemaker_runtime-fips_interface": {
-        "count": "${var.sagemaker_runtime-fips_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"sagemaker_runtime-fips\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.sagemaker.runtime-fips\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -1236,7 +1236,7 @@
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}"
       },
       "secretsmanager_interface": {
-        "count": "${var.secretsmanager_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"secretsmanager\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.secretsmanager\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -1244,10 +1244,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.secretsmanager_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.secretsmanager), null)}"
       },
       "servicecatalog_interface": {
-        "count": "${var.servicecatalog_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"servicecatalog\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.servicecatalog\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -1257,7 +1257,7 @@
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}"
       },
       "servicecatalog-appregistry_interface": {
-        "count": "${var.servicecatalog-appregistry_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"servicecatalog-appregistry\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.servicecatalog-appregistry\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -1265,10 +1265,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.servicecatalog-appregistry_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.servicecatalog-appregistry), null)}"
       },
       "sms_interface": {
-        "count": "${var.sms_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"sms\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.sms\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -1278,7 +1278,7 @@
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}"
       },
       "sms-fips_interface": {
-        "count": "${var.sms-fips_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"sms-fips\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.sms-fips\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -1288,7 +1288,7 @@
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}"
       },
       "snow-device-management_interface": {
-        "count": "${var.snow-device-management_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"snow-device-management\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.snow-device-management\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -1296,10 +1296,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.snow-device-management_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.snow-device-management), null)}"
       },
       "sns_interface": {
-        "count": "${var.sns_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"sns\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.sns\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -1307,10 +1307,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.sns_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.sns), null)}"
       },
       "sqs_interface": {
-        "count": "${var.sqs_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"sqs\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.sqs\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -1318,10 +1318,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.sqs_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.sqs), null)}"
       },
       "ssm_interface": {
-        "count": "${var.ssm_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"ssm\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.ssm\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -1329,10 +1329,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.ssm_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.ssm), null)}"
       },
       "ssmmessages_interface": {
-        "count": "${var.ssmmessages_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"ssmmessages\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.ssmmessages\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -1340,10 +1340,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.ssmmessages_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.ssmmessages), null)}"
       },
       "states_interface": {
-        "count": "${var.states_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"states\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.states\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -1351,10 +1351,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.states_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.states), null)}"
       },
       "storagegateway_interface": {
-        "count": "${var.storagegateway_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"storagegateway\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.storagegateway\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -1364,7 +1364,7 @@
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}"
       },
       "sts_interface": {
-        "count": "${var.sts_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"sts\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.sts\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -1372,10 +1372,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.sts_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.sts), null)}"
       },
       "synthetics_interface": {
-        "count": "${var.synthetics_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"synthetics\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.synthetics\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -1383,10 +1383,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.synthetics_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.synthetics), null)}"
       },
       "textract_interface": {
-        "count": "${var.textract_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"textract\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.textract\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -1394,10 +1394,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.textract_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.textract), null)}"
       },
       "textract-fips_interface": {
-        "count": "${var.textract-fips_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"textract-fips\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.textract-fips\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -1405,10 +1405,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.textract-fips_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.textract-fips), null)}"
       },
       "transcribe_interface": {
-        "count": "${var.transcribe_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"transcribe\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.transcribe\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -1416,10 +1416,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.transcribe_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.transcribe), null)}"
       },
       "transcribestreaming_interface": {
-        "count": "${var.transcribestreaming_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"transcribestreaming\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.transcribestreaming\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -1427,10 +1427,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.transcribestreaming_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.transcribestreaming), null)}"
       },
       "transfer_interface": {
-        "count": "${var.transfer_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"transfer\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.transfer\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -1440,7 +1440,7 @@
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}"
       },
       "transfer_server_interface": {
-        "count": "${var.transfer_server_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"transfer_server\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.transfer.server\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -1450,7 +1450,7 @@
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}"
       },
       "workspaces_interface": {
-        "count": "${var.workspaces_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"workspaces\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.workspaces\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -1458,10 +1458,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.workspaces_interface_policy}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.workspaces), null)}"
       },
       "xray_interface": {
-        "count": "${var.xray_interface_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_interface_endpoints, \"xray\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.xray\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -1469,37 +1469,27 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${var.xray_interface_policy}"
-      },
-      "vpce_us-east-1_vpce-svc-0d5a9851843fed971_interface": {
-        "count": "${var.vpce_us-east-1_vpce-svc-0d5a9851843fed971_interface_enabled ? 1 : 0}",
-        "service_name": "${replace(\"com.amazonaws.vpce.<REGION>.vpce-svc-0d5a9851843fed971\", \"<REGION>\", data.aws_region.current.name)}",
-        "vpc_endpoint_type": "Interface",
-        "tags": "${var.tags}",
-        "auto_accept": true,
-        "vpc_id": "${var.vpc_id}",
-        "security_group_ids": "${var.security_group_ids}",
-        "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.xray), null)}"
       },
       "dynamodb_gateway": {
-        "count": "${var.dynamodb_gateway_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_gateway_endpoints, \"dynamodb\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.dynamodb\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Gateway",
         "tags": "${var.tags}",
         "auto_accept": true,
         "vpc_id": "${var.vpc_id}",
         "route_table_ids": "${length(var.route_table_ids) > 0 ? var.route_table_ids : null}",
-        "policy": "${var.dynamodb_gateway_policy}"
+        "policy": "${try(jsonencode(var.gateway_endpoint_policies.dynamodb), null)}"
       },
       "s3_gateway": {
-        "count": "${var.s3_gateway_enabled ? 1 : 0}",
+        "count": "${contains(var.enabled_gateway_endpoints, \"s3\") ? 1 : 0}",
         "service_name": "${replace(\"com.amazonaws.<REGION>.s3\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Gateway",
         "tags": "${var.tags}",
         "auto_accept": true,
         "vpc_id": "${var.vpc_id}",
         "route_table_ids": "${length(var.route_table_ids) > 0 ? var.route_table_ids : null}",
-        "policy": "${var.s3_gateway_policy}"
+        "policy": "${try(jsonencode(var.gateway_endpoint_policies.s3), null)}"
       }
     }
   }

@@ -60,15 +60,15 @@ def generate_tf_json(endpoints):
         tf_outputs_template = json.load(fp)
     with open('./templates/variables.tf.json') as fp:
         tf_variables_template = json.load(fp)
-    tf_locals = tf_locals_template['locals']
     tf_endpoints = tf_resources_template['resource']['aws_vpc_endpoint']
-    tf_outputs = tf_outputs_template['output']
     tf_variables = tf_variables_template['variable']
+    allowed_policy_keys = {"Interface": set(), "Gateway": set()}
+    available_endpoints = {"Interface": set(), "Gateway": set()}
     for endpoint_type, eps in endpoints.items():
         for name, ep in eps.items():
             resource_name = f"{name}_{endpoint_type.lower()}"
             tf_endpoints[resource_name] = {
-                "count": '${var.%s_enabled ? 1 : 0}' % resource_name,
+                "count": '${contains(var.enabled_%s_endpoints, "%s") ? 1 : 0}' % (endpoint_type.lower(), name),
                 "service_name": regional_string(ep["ServiceName"]),
                 "vpc_endpoint_type": endpoint_type,
                 "tags": "${var.tags}",
@@ -81,21 +81,34 @@ def generate_tf_json(endpoints):
                 tf_endpoints[resource_name]['security_group_ids'] = '${var.security_group_ids}'
                 tf_endpoints[resource_name]['subnet_ids'] = '${length(var.subnet_ids) > 0 ? var.subnet_ids : null}'
             if ep["VpcEndpointPolicySupported"]:
-                tf_endpoints[resource_name]['policy'] = '${var.%s_policy}' % resource_name
-                tf_variables[f"{resource_name}_policy"] = {
-                    "type": "string",
-                    "description": f"A policy to attach to the {name} {endpoint_type} endpoint that controls access to the service. This is a JSON formatted string. Defaults to full access.",
-                    "default": None
-                }
-            tf_variables[f"{resource_name}_enabled"] = {
-                "type": "bool",
-                "description": f"Set to true to enable {name} {endpoint_type} endpoint.",
-                "default": False
-            }
+                tf_endpoints[resource_name]['policy'] = '${try(jsonencode(var.%s_endpoint_policies.%s), null)}' % (endpoint_type.lower(), name)
+                allowed_policy_keys[endpoint_type].add(name)
+            available_endpoints[endpoint_type].add(name)
+    for ep_type in ["Interface", "Gateway"]:
+        tf_var_name = f"enabled_{ep_type.lower()}_endpoints"
+        tf_policy_var = f"{ep_type.lower()}_endpoint_policies"
+        regex = regex_builder(available_endpoints[ep_type])
+        tf_variables[tf_var_name]["description"] = tf_variables[tf_var_name]["description"] + "\n\nAvailable endpoints:\n* " + "\n* ".join(sorted(available_endpoints[ep_type]))
+        tf_variables[tf_var_name]["validation"] = {
+            "condition": """${var.%s == [] ? true : can([for s in var.%s : regex("%s", s)])}""" % (tf_var_name, tf_var_name, regex),
+            "error_message": f"Endpoint names can only contain one or more of the following {sorted(available_endpoints[ep_type])}."
+        }
+        tf_variables[tf_policy_var]["validation"] = {
+            "condition": """${[for k, v in var.%s: k] == [] ? true : can([for s in [for k, v in var.%s: k] : regex("%s", s)])}""" % (
+            tf_policy_var, tf_policy_var, regex),
+            "error_message": f"Endpoint names can only contain one or more of the following {sorted(available_endpoints[ep_type])}."
+        }
     with open('./main.tf.json', "w") as fp:
-        json.dump(tf_resources_template, fp)
+        json.dump(tf_resources_template, fp, indent=2)
     with open('./variables.tf.json', "w") as fp:
-        json.dump(tf_variables_template, fp)
+        json.dump(tf_variables_template, fp, indent=2)
+
+
+def regex_builder(available_endpoints):
+    regex = ""
+    for endpoint in available_endpoints:
+        regex = regex + f"||${endpoint}^"
+    return regex
 
 
 def regional_string(string):

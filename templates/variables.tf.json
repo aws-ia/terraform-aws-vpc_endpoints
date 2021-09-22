@@ -34,10 +34,25 @@
       "default": {},
       "description": "A map of tags to assign to the endpoints. If configured with a provider default_tags configuration block present, tags with matching keys will overwrite those defined at the module-level."
     },
-    "policies": {
-      "type": "map(string)",
+    "gateway_endpoint_policies": {
+      "type": "map(map(any))",
       "default": {},
-      "description": "A map of policies to apply to endpoints, the key must match the endpoint name used in the \"enabled_endpoints\" variable."
+      "description": "Policies to apply to gateway endpoints, the key must match the endpoint name used in the \"enabled_endpoints\" variable, policies declared for endpoints that are not enabled will be ignored."
+    },
+    "interface_endpoint_policies": {
+      "type": "map(map(any))",
+      "default": {},
+      "description": "Policies to apply to interface endpoints, the key must match the endpoint name used in the \"enabled_endpoints\" variable, policies declared for endpoints that are not enabled will be ignored."
+    },
+    "enabled_interface_endpoints": {
+      "type": "list(string)",
+      "default": [],
+      "description": "List of shortened interface endpoint names that are to be enabled. Shortened names are the endpoint name excluding the dns style prefix, so \"com.amazonaws.us-east-1.s3\" would be entered as \"s3\", the region will be pulled from your provider configuration."
+    },
+    "enabled_gateway_endpoints": {
+      "type": "list(string)",
+      "default": [],
+      "description": "List of shortened gateway endpoint names that are to be enabled. Shortened names are the endpoint name excluding the dns style prefix, so \"com.amazonaws.us-east-1.s3\" would be entered as \"s3\", the region will be pulled from your provider configuration."
     }
   }
 }
