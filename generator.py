@@ -52,21 +52,20 @@ def get_endpoint_services(session=boto3):
 
 
 def generate_tf_json(endpoints):
-    with open('./templates/locals.tf.json') as fp:
-        tf_locals_template = json.load(fp)
-    with open('./templates/main.tf.json') as fp:
+    with open('templates/main.tf.json.template') as fp:
         tf_resources_template = json.load(fp)
-    with open('./templates/outputs.tf.json') as fp:
-        tf_outputs_template = json.load(fp)
-    with open('./templates/variables.tf.json') as fp:
+    with open('templates/locals.tf.json.template') as fp:
+        tf_locals_template = json.load(fp)
+    with open('templates/variables.tf.json.template') as fp:
         tf_variables_template = json.load(fp)
     tf_endpoints = tf_resources_template['resource']['aws_vpc_endpoint']
+    tf_locals = tf_locals_template['locals']
     tf_variables = tf_variables_template['variable']
     allowed_policy_keys = {"Interface": set(), "Gateway": set()}
     available_endpoints = {"Interface": set(), "Gateway": set()}
     for endpoint_type, eps in endpoints.items():
         for name, ep in eps.items():
-            resource_name = f"{name}_{endpoint_type.lower()}"
+            resource_name = f"{name.replace('-', '_')}_{endpoint_type.lower()}"
             tf_endpoints[resource_name] = {
                 "count": '${contains(var.enabled_%s_endpoints, "%s") ? 1 : 0}' % (endpoint_type.lower(), name),
                 "service_name": regional_string(ep["ServiceName"]),
@@ -83,6 +82,7 @@ def generate_tf_json(endpoints):
             if ep["VpcEndpointPolicySupported"]:
                 tf_endpoints[resource_name]['policy'] = '${try(jsonencode(var.%s_endpoint_policies.%s), null)}' % (endpoint_type.lower(), name)
                 allowed_policy_keys[endpoint_type].add(name)
+            tf_locals[f"{endpoint_type.lower()}_output_dict"][name] = "${length(resource.aws_vpc_endpoint.%s) == 1 ? resource.aws_vpc_endpoint.%s[0] : null}" % (resource_name, resource_name)
             available_endpoints[endpoint_type].add(name)
     for ep_type in ["Interface", "Gateway"]:
         tf_var_name = f"enabled_{ep_type.lower()}_endpoints"
@@ -102,6 +102,8 @@ def generate_tf_json(endpoints):
         json.dump(tf_resources_template, fp, indent=2)
     with open('./variables.tf.json', "w") as fp:
         json.dump(tf_variables_template, fp, indent=2)
+    with open('./locals.tf.json', "w") as fp:
+        json.dump(tf_locals_template, fp, indent=2)
 
 
 def regex_builder(available_endpoints):
