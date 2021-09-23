@@ -30,3 +30,6 @@ override.tf.json
 
 # language server logs
 lsp/
+
+# tools binaries
+build/bin/

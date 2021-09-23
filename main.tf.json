@@ -1,8 +1,8 @@
 {
   "resource": {
     "aws_vpc_endpoint": {
-      "sagemaker_notebook_interface": {
-        "count": "${contains(var.enabled_interface_endpoints, \"sagemaker_notebook\") ? 1 : 0}",
+      "sagemaker_us_east_1_notebook_interface": {
+        "count": "${contains(var.enabled_interface_endpoints, \"sagemaker_us-east-1_notebook\") ? 1 : 0}",
         "service_name": "${replace(\"aws.sagemaker.<REGION>.notebook\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -10,10 +10,10 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${try(jsonencode(var.interface_endpoint_policies.sagemaker_notebook), null)}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.sagemaker_us-east-1_notebook), null)}"
       },
-      "sagemaker_studio_interface": {
-        "count": "${contains(var.enabled_interface_endpoints, \"sagemaker_studio\") ? 1 : 0}",
+      "sagemaker_us_east_1_studio_interface": {
+        "count": "${contains(var.enabled_interface_endpoints, \"sagemaker_us-east-1_studio\") ? 1 : 0}",
         "service_name": "${replace(\"aws.sagemaker.<REGION>.studio\", \"<REGION>\", data.aws_region.current.name)}",
         "vpc_endpoint_type": "Interface",
         "tags": "${var.tags}",
@@ -21,7 +21,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${var.security_group_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
-        "policy": "${try(jsonencode(var.interface_endpoint_policies.sagemaker_studio), null)}"
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.sagemaker_us-east-1_studio), null)}"
       },
       "s3_global_accesspoint_interface": {
         "count": "${contains(var.enabled_interface_endpoints, \"s3-global_accesspoint\") ? 1 : 0}",
