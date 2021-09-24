@@ -27,9 +27,9 @@ def generate_tf_json(endpoints):
         for name, ep in eps.items():
             parse_endpoint(name, endpoint_type, tf_endpoints, tf_locals, ep, available_endpoints, allowed_policy_keys)
         create_tf_variables(endpoint_type, available_endpoints, tf_variables)
-    write_tf('main', tf_resources_template)
-    write_tf('locals', tf_locals_template)
-    write_tf('variables', tf_variables_template)
+    write_tf('generated_vpc_endpoint_resources', tf_resources_template)
+    write_tf('generated_locals', tf_locals_template)
+    write_tf('generated_variables', tf_variables_template)
 
 
 def get_available_endpoints(session=boto3):
@@ -105,7 +105,7 @@ def write_tf(name, file_data):
 def parse_endpoint(name, endpoint_type, tf_endpoints, tf_locals, ep, available_endpoints, allowed_policy_keys):
     resource_name = f"{name.replace('-', '_')}_{endpoint_type.lower()}"
     tf_endpoints[resource_name] = {
-        "count": '${contains(var.enabled_%s_endpoints, "%s") ? 1 : 0}' % (endpoint_type.lower(), name),
+        "count": '${var.enable_all_endpoints ? 1 : contains(var.enabled_%s_endpoints, "%s") ? 1 : 0}' % (endpoint_type.lower(), name),
         "service_name": regional_string(ep["ServiceName"]),
         "vpc_endpoint_type": endpoint_type,
         "tags": "${var.tags}",
@@ -116,7 +116,7 @@ def parse_endpoint(name, endpoint_type, tf_endpoints, tf_locals, ep, available_e
         tf_endpoints[resource_name][
             'route_table_ids'] = '${length(var.route_table_ids) > 0 ? var.route_table_ids : null}'
     elif endpoint_type == 'Interface':
-        tf_endpoints[resource_name]['security_group_ids'] = '${var.security_group_ids}'
+        tf_endpoints[resource_name]['security_group_ids'] = '${local.sg_ids}'
         tf_endpoints[resource_name]['subnet_ids'] = '${length(var.subnet_ids) > 0 ? var.subnet_ids : null}'
     if ep["VpcEndpointPolicySupported"]:
         tf_endpoints[resource_name]['policy'] = '${try(jsonencode(var.%s_endpoint_policies.%s), null)}' % (

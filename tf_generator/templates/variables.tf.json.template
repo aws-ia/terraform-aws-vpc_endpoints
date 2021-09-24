@@ -1,39 +1,5 @@
 {
   "variable": {
-    "enable_all_endpoints": {
-      "type": "bool",
-      "default": "false",
-      "description": "setting this to true enables all endpoints provided by this module with default settings."
-    },
-    "vpc_id": {
-      "type": "string",
-      "description": "ID for the VPC that endpoints will be deployed into"
-    },
-    "route_table_ids": {
-      "type": "list(string)",
-      "default": [],
-      "description": "One or more route table IDs. Only applicable for endpoints of type Gateway"
-    },
-    "subnet_ids": {
-      "type": "list(string)",
-      "default": [],
-      "description": "The ID of one or more subnets in which to create a network interface for endpoints. Only applicable for endpoints of type GatewayLoadBalancer and Interface."
-    },
-    "security_group_ids": {
-      "type": "list(string)",
-      "default": [],
-      "description": "The ID of one or more security groups to associate with the endpoint's network interface. Required for endpoints of type Interface."
-    },
-    "private_dns_enabled": {
-      "type": "bool",
-      "default": false,
-      "description": "Whether or not to associate a private hosted zone with the specified VPC. Only applicable for endpoints of type Interface."
-    },
-    "tags": {
-      "type": "map(string)",
-      "default": {},
-      "description": "A map of tags to assign to the endpoints. If configured with a provider default_tags configuration block present, tags with matching keys will overwrite those defined at the module-level."
-    },
     "gateway_endpoint_policies": {
       "type": "map(map(any))",
       "default": {},

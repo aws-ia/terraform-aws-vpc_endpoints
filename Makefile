@@ -1,4 +1,4 @@
-.PHONY: static-tests unit-tests integration-tests e2e-tests init
+.PHONY: generate static-tests unit-tests integration-tests e2e-tests init
 
 # OS can be "Linux" or "macOS"
 OS ?= $(shell uname | sed 's/Darwin/macOS/')
@@ -15,6 +15,9 @@ TFSEC_VERSION := 0.58.9
 TERRASCAN_VERSION := 1.10.0
 
 SHELL := /usr/bin/env bash
+
+generate:
+	cd tf_generator && python3 generator.py
 
 static-tests: setup-env
 	# throwing the kitchen sink at this while we decide on a toolset
