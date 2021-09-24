@@ -1,9 +1,3 @@
-variable "enable_all_endpoints" {
-  type = bool
-  description = "setting this to true enables all endpoints provided by this module with default settings."
-  default = false
-}
-
 variable "vpc_id" {
   type = string
   description = "ID for the VPC that endpoints are be associated with."

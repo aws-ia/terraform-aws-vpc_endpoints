@@ -105,7 +105,7 @@ def write_tf(name, file_data):
 def parse_endpoint(name, endpoint_type, tf_endpoints, tf_locals, ep, available_endpoints, allowed_policy_keys):
     resource_name = f"{name.replace('-', '_')}_{endpoint_type.lower()}"
     tf_endpoints[resource_name] = {
-        "count": '${var.enable_all_endpoints ? 1 : contains(var.enabled_%s_endpoints, "%s") ? 1 : 0}' % (endpoint_type.lower(), name),
+        "count": '${contains(var.enabled_%s_endpoints, "%s") ? 1 : 0}' % (endpoint_type.lower(), name),
         "service_name": regional_string(ep["ServiceName"]),
         "vpc_endpoint_type": endpoint_type,
         "tags": "${var.tags}",
