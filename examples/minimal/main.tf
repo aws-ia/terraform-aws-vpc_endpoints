@@ -15,16 +15,16 @@ provider "aws" {
   profile = var.profile
 }
 
-resource "module" "my_endpoints" {
+module "my_endpoints" {
   source = "../../"
   vpc_id = var.vpc_id
-  enabled_endpoints = ["s3"]
+  enabled_interface_endpoints = ["s3"]
 }
 
 output "s3_arn" {
-  value = module.my_endpoints.outputs.s3.arn
+  value = module.my_endpoints.interface_endpoints["s3"]["arn"]
 }
 
-output "security_group_id" {
-  value = module.my_endpoints.outputs.security_group_ids
+output "security_group_ids" {
+  value = module.my_endpoints.security_group_ids
 }

@@ -43,8 +43,11 @@ static-tests: setup-env
 unit-tests: setup-env
 	# Should test code paths in an individual module. terratest, or `terraform test`, this is where you want to test different regions, use retries to smooth transient errors
 	# Should not run automatically on PR's from un-trusted contributors
-	echo "todo"
-	exit 1
+	export PATH=$(shell pwd)/build/bin:$${PATH} &&\
+	cd test && \
+	go test -timeout 30m -json | tee >(go-test-report) | jq -jr .Output 2> /dev/null | sed 's/null//g';\
+	retval_bash="$${PIPESTATUS[0]}" retval_zsh="$${pipestatus[1]}" ;\
+	exit $$retval_bash $$retval_zsh
 
 integration-tests:
     # Should test code paths in a module of modules and run when on eof the sub-modules is updated. terratest, or `terraform test` use retries to smooth transient errors

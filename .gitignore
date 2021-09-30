@@ -36,3 +36,6 @@ lsp/
 
 # tools binaries
 build/bin/
+
+# test report
+test/test_report.html
