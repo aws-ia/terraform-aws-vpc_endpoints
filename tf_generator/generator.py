@@ -118,6 +118,9 @@ def parse_endpoint(name, endpoint_type, tf_endpoints, tf_locals, ep, available_e
     elif endpoint_type == 'Interface':
         tf_endpoints[resource_name]['security_group_ids'] = '${local.sg_ids}'
         tf_endpoints[resource_name]['subnet_ids'] = '${length(var.subnet_ids) > 0 ? var.subnet_ids : null}'
+        # s3 doesn't support private_dns
+        if name not in ["s3"]:
+            tf_endpoints[resource_name]['private_dns_enabled'] = '${var.private_dns_enabled}'
     if ep["VpcEndpointPolicySupported"]:
         tf_endpoints[resource_name]['policy'] = '${try(jsonencode(var.%s_endpoint_policies.%s), null)}' % (
         endpoint_type.lower(), name)

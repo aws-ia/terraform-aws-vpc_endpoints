@@ -24,7 +24,7 @@ variable "security_group_ids" {
 variable "private_dns_enabled" {
   type = bool
   description = "Whether or not to associate a private hosted zone with the specified VPC. Only applicable for endpoints of type Interface."
-  default = false
+  default = true
 }
 
 variable "tags" {

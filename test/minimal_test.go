@@ -3,14 +3,12 @@ package test
 import (
 	"context"
 	"fmt"
+	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/aws/aws-sdk-go/aws"
 	"strings"
 
-	//"fmt"
-	//"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"testing"
 
-	//"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/gruntwork-io/terratest/modules/terraform"
 	"github.com/stretchr/testify/assert"
@@ -26,21 +24,42 @@ var testCasesMinimal = []testCase{
 
 func validateEndpoints(t *testing.T, tfOpts *terraform.Options) {
 	s3Arn := terraform.Output(t, tfOpts, "s3_arn")
-	require.NotNil(t, s3Arn, "s3 endponit should be created")
+	s3Dns := terraform.Output(t, tfOpts, "s3_private_dns")
+	stsArn := terraform.Output(t, tfOpts, "sts_arn")
+	stsDns := terraform.Output(t, tfOpts, "sts_private_dns")
+	require.NotNil(t, s3Arn, "s3 endpoint should be created")
+	require.NotNil(t, stsArn, "sts endpoint should be created")
+	assert.True(t, strings.HasPrefix(stsArn, "arn:"), "should output a valid arn")
+	assert.True(t, stsDns == "true", "private dns should be enabled")
 	assert.True(t, strings.HasPrefix(s3Arn, "arn:"), "should output a valid arn")
+	assert.True(t, s3Dns == "false", "private dns cannot be enabled for s3 interface endpoint")
 }
 
 func validateSgAssociated(t *testing.T, tfOpts *terraform.Options) {
-	subnetIds := terraform.OutputList(t, tfOpts, "security_group_ids")
-	require.NotNil(t, subnetIds, "a subnet should be created when one is not provided")
-	require.Equal(t, 1, len(subnetIds), "there should be one security group created")
-	assert.True(t, strings.HasPrefix(subnetIds[0], "sg-"), "should output a valid security group id")
+	sgIds := terraform.OutputList(t, tfOpts, "security_group_ids")
+	require.NotNil(t, sgIds, "a security group should be created when one is not provided")
+	require.Equal(t, 1, len(sgIds), "there should be one security group created")
+	assert.True(t, strings.HasPrefix(sgIds[0], "sg-"), "should output a valid security group id")
 }
 
 func createVpc(t *testing.T, region string, profile string) string {
 	client := getEc2Client(profile, region)
 	createVpcResponse, err := client.CreateVpc(context.TODO(), &ec2.CreateVpcInput{
 		CidrBlock: aws.String("10.0.0.0/16"),
+	})
+	require.Nil(t, err)
+	_, err = client.ModifyVpcAttribute(context.TODO(), &ec2.ModifyVpcAttributeInput{
+		VpcId: createVpcResponse.Vpc.VpcId,
+		EnableDnsHostnames: &types.AttributeBooleanValue{
+			Value: aws.Bool(true),
+		},
+	})
+	require.Nil(t, err)
+	_, err = client.ModifyVpcAttribute(context.TODO(), &ec2.ModifyVpcAttributeInput{
+		VpcId: createVpcResponse.Vpc.VpcId,
+		EnableDnsSupport: &types.AttributeBooleanValue{
+			Value: aws.Bool(true),
+		},
 	})
 	require.Nil(t, err)
 	return *createVpcResponse.Vpc.VpcId

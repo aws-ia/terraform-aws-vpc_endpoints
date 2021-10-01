@@ -10,6 +10,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.sagemaker_us-east-1_notebook), null)}"
       },
       "sagemaker_us_east_1_studio_interface": {
@@ -21,6 +22,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.sagemaker_us-east-1_studio), null)}"
       },
       "s3_global_accesspoint_interface": {
@@ -32,6 +34,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.s3-global_accesspoint), null)}"
       },
       "access_analyzer_interface": {
@@ -43,7 +46,20 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.access-analyzer), null)}"
+      },
+      "account_interface": {
+        "count": "${contains(var.enabled_interface_endpoints, \"account\") ? 1 : 0}",
+        "service_name": "${replace(\"com.amazonaws.<REGION>.account\", \"<REGION>\", data.aws_region.current.name)}",
+        "vpc_endpoint_type": "Interface",
+        "tags": "${var.tags}",
+        "auto_accept": true,
+        "vpc_id": "${var.vpc_id}",
+        "security_group_ids": "${local.sg_ids}",
+        "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.account), null)}"
       },
       "acm_pca_interface": {
         "count": "${contains(var.enabled_interface_endpoints, \"acm-pca\") ? 1 : 0}",
@@ -54,6 +70,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.acm-pca), null)}"
       },
       "airflow_api_interface": {
@@ -65,6 +82,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.airflow_api), null)}"
       },
       "airflow_env_interface": {
@@ -76,6 +94,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.airflow_env), null)}"
       },
       "airflow_ops_interface": {
@@ -87,6 +106,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.airflow_ops), null)}"
       },
       "app_integrations_interface": {
@@ -98,6 +118,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.app-integrations), null)}"
       },
       "application_autoscaling_interface": {
@@ -109,6 +130,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.application-autoscaling), null)}"
       },
       "appmesh_envoy_management_interface": {
@@ -119,7 +141,8 @@
         "auto_accept": true,
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
-        "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}"
+        "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}"
       },
       "apprunner_interface": {
         "count": "${contains(var.enabled_interface_endpoints, \"apprunner\") ? 1 : 0}",
@@ -130,6 +153,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.apprunner), null)}"
       },
       "appstream_api_interface": {
@@ -140,7 +164,8 @@
         "auto_accept": true,
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
-        "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}"
+        "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}"
       },
       "appstream_streaming_interface": {
         "count": "${contains(var.enabled_interface_endpoints, \"appstream_streaming\") ? 1 : 0}",
@@ -150,7 +175,19 @@
         "auto_accept": true,
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
-        "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}"
+        "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}"
+      },
+      "aps_interface": {
+        "count": "${contains(var.enabled_interface_endpoints, \"aps\") ? 1 : 0}",
+        "service_name": "${replace(\"com.amazonaws.<REGION>.aps\", \"<REGION>\", data.aws_region.current.name)}",
+        "vpc_endpoint_type": "Interface",
+        "tags": "${var.tags}",
+        "auto_accept": true,
+        "vpc_id": "${var.vpc_id}",
+        "security_group_ids": "${local.sg_ids}",
+        "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}"
       },
       "aps_workspaces_interface": {
         "count": "${contains(var.enabled_interface_endpoints, \"aps-workspaces\") ? 1 : 0}",
@@ -160,7 +197,8 @@
         "auto_accept": true,
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
-        "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}"
+        "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}"
       },
       "athena_interface": {
         "count": "${contains(var.enabled_interface_endpoints, \"athena\") ? 1 : 0}",
@@ -171,6 +209,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.athena), null)}"
       },
       "auditmanager_interface": {
@@ -182,6 +221,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.auditmanager), null)}"
       },
       "autoscaling_interface": {
@@ -193,6 +233,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.autoscaling), null)}"
       },
       "autoscaling_plans_interface": {
@@ -204,6 +245,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.autoscaling-plans), null)}"
       },
       "awsconnector_interface": {
@@ -214,7 +256,8 @@
         "auto_accept": true,
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
-        "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}"
+        "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}"
       },
       "braket_interface": {
         "count": "${contains(var.enabled_interface_endpoints, \"braket\") ? 1 : 0}",
@@ -225,6 +268,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.braket), null)}"
       },
       "cassandra_interface": {
@@ -236,6 +280,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.cassandra), null)}"
       },
       "cassandra_fips_interface": {
@@ -247,6 +292,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.cassandra-fips), null)}"
       },
       "clouddirectory_interface": {
@@ -258,6 +304,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.clouddirectory), null)}"
       },
       "cloudformation_interface": {
@@ -268,7 +315,8 @@
         "auto_accept": true,
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
-        "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}"
+        "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}"
       },
       "cloudhsmv2_interface": {
         "count": "${contains(var.enabled_interface_endpoints, \"cloudhsmv2\") ? 1 : 0}",
@@ -279,6 +327,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.cloudhsmv2), null)}"
       },
       "cloudtrail_interface": {
@@ -289,7 +338,8 @@
         "auto_accept": true,
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
-        "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}"
+        "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}"
       },
       "codeartifact_api_interface": {
         "count": "${contains(var.enabled_interface_endpoints, \"codeartifact_api\") ? 1 : 0}",
@@ -300,6 +350,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.codeartifact_api), null)}"
       },
       "codeartifact_repositories_interface": {
@@ -311,6 +362,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.codeartifact_repositories), null)}"
       },
       "codebuild_interface": {
@@ -322,6 +374,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.codebuild), null)}"
       },
       "codebuild_fips_interface": {
@@ -333,6 +386,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.codebuild-fips), null)}"
       },
       "codecommit_interface": {
@@ -344,6 +398,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.codecommit), null)}"
       },
       "codecommit_fips_interface": {
@@ -355,6 +410,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.codecommit-fips), null)}"
       },
       "codedeploy_interface": {
@@ -366,6 +422,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.codedeploy), null)}"
       },
       "codedeploy_commands_secure_interface": {
@@ -377,6 +434,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.codedeploy-commands-secure), null)}"
       },
       "codeguru_profiler_interface": {
@@ -387,7 +445,8 @@
         "auto_accept": true,
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
-        "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}"
+        "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}"
       },
       "codeguru_reviewer_interface": {
         "count": "${contains(var.enabled_interface_endpoints, \"codeguru-reviewer\") ? 1 : 0}",
@@ -397,7 +456,8 @@
         "auto_accept": true,
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
-        "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}"
+        "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}"
       },
       "codepipeline_interface": {
         "count": "${contains(var.enabled_interface_endpoints, \"codepipeline\") ? 1 : 0}",
@@ -407,7 +467,8 @@
         "auto_accept": true,
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
-        "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}"
+        "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}"
       },
       "codestar_connections_api_interface": {
         "count": "${contains(var.enabled_interface_endpoints, \"codestar-connections_api\") ? 1 : 0}",
@@ -418,6 +479,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.codestar-connections_api), null)}"
       },
       "comprehend_interface": {
@@ -429,6 +491,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.comprehend), null)}"
       },
       "comprehendmedical_interface": {
@@ -440,6 +503,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.comprehendmedical), null)}"
       },
       "config_interface": {
@@ -451,6 +515,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.config), null)}"
       },
       "databrew_interface": {
@@ -462,6 +527,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.databrew), null)}"
       },
       "dataexchange_interface": {
@@ -473,6 +539,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.dataexchange), null)}"
       },
       "datasync_interface": {
@@ -483,7 +550,8 @@
         "auto_accept": true,
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
-        "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}"
+        "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}"
       },
       "devops_guru_interface": {
         "count": "${contains(var.enabled_interface_endpoints, \"devops-guru\") ? 1 : 0}",
@@ -494,6 +562,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.devops-guru), null)}"
       },
       "dms_interface": {
@@ -505,6 +574,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.dms), null)}"
       },
       "dms_fips_interface": {
@@ -516,7 +586,20 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.dms-fips), null)}"
+      },
+      "ds_interface": {
+        "count": "${contains(var.enabled_interface_endpoints, \"ds\") ? 1 : 0}",
+        "service_name": "${replace(\"com.amazonaws.<REGION>.ds\", \"<REGION>\", data.aws_region.current.name)}",
+        "vpc_endpoint_type": "Interface",
+        "tags": "${var.tags}",
+        "auto_accept": true,
+        "vpc_id": "${var.vpc_id}",
+        "security_group_ids": "${local.sg_ids}",
+        "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.ds), null)}"
       },
       "ebs_interface": {
         "count": "${contains(var.enabled_interface_endpoints, \"ebs\") ? 1 : 0}",
@@ -526,7 +609,8 @@
         "auto_accept": true,
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
-        "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}"
+        "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}"
       },
       "ec2_interface": {
         "count": "${contains(var.enabled_interface_endpoints, \"ec2\") ? 1 : 0}",
@@ -537,6 +621,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.ec2), null)}"
       },
       "ec2messages_interface": {
@@ -548,6 +633,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.ec2messages), null)}"
       },
       "ecr_api_interface": {
@@ -559,6 +645,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.ecr_api), null)}"
       },
       "ecr_dkr_interface": {
@@ -570,6 +657,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.ecr_dkr), null)}"
       },
       "ecs_interface": {
@@ -581,6 +669,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.ecs), null)}"
       },
       "ecs_agent_interface": {
@@ -592,6 +681,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.ecs-agent), null)}"
       },
       "ecs_telemetry_interface": {
@@ -603,6 +693,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.ecs-telemetry), null)}"
       },
       "elastic_inference_runtime_interface": {
@@ -613,7 +704,8 @@
         "auto_accept": true,
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
-        "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}"
+        "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}"
       },
       "elasticbeanstalk_interface": {
         "count": "${contains(var.enabled_interface_endpoints, \"elasticbeanstalk\") ? 1 : 0}",
@@ -624,6 +716,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.elasticbeanstalk), null)}"
       },
       "elasticbeanstalk_health_interface": {
@@ -635,6 +728,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.elasticbeanstalk-health), null)}"
       },
       "elasticfilesystem_interface": {
@@ -646,6 +740,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.elasticfilesystem), null)}"
       },
       "elasticfilesystem_fips_interface": {
@@ -657,6 +752,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.elasticfilesystem-fips), null)}"
       },
       "elasticloadbalancing_interface": {
@@ -668,6 +764,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.elasticloadbalancing), null)}"
       },
       "elasticmapreduce_interface": {
@@ -679,6 +776,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.elasticmapreduce), null)}"
       },
       "email_smtp_interface": {
@@ -689,7 +787,8 @@
         "auto_accept": true,
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
-        "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}"
+        "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}"
       },
       "emr_containers_interface": {
         "count": "${contains(var.enabled_interface_endpoints, \"emr-containers\") ? 1 : 0}",
@@ -700,6 +799,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.emr-containers), null)}"
       },
       "events_interface": {
@@ -711,6 +811,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.events), null)}"
       },
       "execute_api_interface": {
@@ -722,6 +823,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.execute-api), null)}"
       },
       "finspace_interface": {
@@ -733,6 +835,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.finspace), null)}"
       },
       "finspace_api_interface": {
@@ -744,6 +847,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.finspace-api), null)}"
       },
       "fis_interface": {
@@ -755,6 +859,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.fis), null)}"
       },
       "frauddetector_interface": {
@@ -766,6 +871,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.frauddetector), null)}"
       },
       "git_codecommit_interface": {
@@ -777,6 +883,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.git-codecommit), null)}"
       },
       "git_codecommit_fips_interface": {
@@ -788,6 +895,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.git-codecommit-fips), null)}"
       },
       "glue_interface": {
@@ -799,6 +907,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.glue), null)}"
       },
       "greengrass_interface": {
@@ -810,6 +919,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.greengrass), null)}"
       },
       "groundstation_interface": {
@@ -821,6 +931,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.groundstation), null)}"
       },
       "healthlake_interface": {
@@ -832,6 +943,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.healthlake), null)}"
       },
       "imagebuilder_interface": {
@@ -843,6 +955,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.imagebuilder), null)}"
       },
       "iot_data_interface": {
@@ -853,7 +966,8 @@
         "auto_accept": true,
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
-        "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}"
+        "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}"
       },
       "iotsitewise_api_interface": {
         "count": "${contains(var.enabled_interface_endpoints, \"iotsitewise_api\") ? 1 : 0}",
@@ -864,6 +978,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.iotsitewise_api), null)}"
       },
       "iotsitewise_data_interface": {
@@ -875,6 +990,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.iotsitewise_data), null)}"
       },
       "iotwireless_api_interface": {
@@ -885,7 +1001,8 @@
         "auto_accept": true,
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
-        "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}"
+        "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}"
       },
       "kendra_interface": {
         "count": "${contains(var.enabled_interface_endpoints, \"kendra\") ? 1 : 0}",
@@ -896,6 +1013,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.kendra), null)}"
       },
       "kinesis_firehose_interface": {
@@ -907,6 +1025,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.kinesis-firehose), null)}"
       },
       "kinesis_streams_interface": {
@@ -918,6 +1037,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.kinesis-streams), null)}"
       },
       "kms_interface": {
@@ -929,6 +1049,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.kms), null)}"
       },
       "lambda_interface": {
@@ -940,6 +1061,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.lambda), null)}"
       },
       "license_manager_interface": {
@@ -951,6 +1073,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.license-manager), null)}"
       },
       "license_manager_fips_interface": {
@@ -962,6 +1085,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.license-manager-fips), null)}"
       },
       "logs_interface": {
@@ -973,6 +1097,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.logs), null)}"
       },
       "lookoutequipment_interface": {
@@ -984,6 +1109,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.lookoutequipment), null)}"
       },
       "lookoutmetrics_interface": {
@@ -995,6 +1121,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.lookoutmetrics), null)}"
       },
       "lookoutvision_interface": {
@@ -1006,6 +1133,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.lookoutvision), null)}"
       },
       "lorawan_cups_interface": {
@@ -1016,7 +1144,8 @@
         "auto_accept": true,
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
-        "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}"
+        "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}"
       },
       "lorawan_lns_interface": {
         "count": "${contains(var.enabled_interface_endpoints, \"lorawan_lns\") ? 1 : 0}",
@@ -1026,7 +1155,8 @@
         "auto_accept": true,
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
-        "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}"
+        "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}"
       },
       "macie2_interface": {
         "count": "${contains(var.enabled_interface_endpoints, \"macie2\") ? 1 : 0}",
@@ -1037,6 +1167,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.macie2), null)}"
       },
       "mgn_interface": {
@@ -1048,6 +1179,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.mgn), null)}"
       },
       "monitoring_interface": {
@@ -1059,6 +1191,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.monitoring), null)}"
       },
       "nimble_interface": {
@@ -1070,6 +1203,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.nimble), null)}"
       },
       "profile_interface": {
@@ -1081,6 +1215,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.profile), null)}"
       },
       "proton_interface": {
@@ -1092,6 +1227,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.proton), null)}"
       },
       "qldb_session_interface": {
@@ -1103,6 +1239,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.qldb_session), null)}"
       },
       "rds_interface": {
@@ -1114,6 +1251,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.rds), null)}"
       },
       "rds_data_interface": {
@@ -1125,6 +1263,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.rds-data), null)}"
       },
       "redshift_interface": {
@@ -1136,6 +1275,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.redshift), null)}"
       },
       "redshift_data_interface": {
@@ -1146,7 +1286,8 @@
         "auto_accept": true,
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
-        "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}"
+        "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}"
       },
       "redshift_fips_interface": {
         "count": "${contains(var.enabled_interface_endpoints, \"redshift-fips\") ? 1 : 0}",
@@ -1157,6 +1298,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.redshift-fips), null)}"
       },
       "rekognition_interface": {
@@ -1168,6 +1310,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.rekognition), null)}"
       },
       "rekognition_fips_interface": {
@@ -1179,6 +1322,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.rekognition-fips), null)}"
       },
       "s3_interface": {
@@ -1201,6 +1345,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.sagemaker_api), null)}"
       },
       "sagemaker_featurestore_runtime_interface": {
@@ -1212,6 +1357,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.sagemaker_featurestore-runtime), null)}"
       },
       "sagemaker_runtime_interface": {
@@ -1223,6 +1369,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.sagemaker_runtime), null)}"
       },
       "sagemaker_runtime_fips_interface": {
@@ -1233,7 +1380,8 @@
         "auto_accept": true,
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
-        "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}"
+        "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}"
       },
       "secretsmanager_interface": {
         "count": "${contains(var.enabled_interface_endpoints, \"secretsmanager\") ? 1 : 0}",
@@ -1244,6 +1392,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.secretsmanager), null)}"
       },
       "servicecatalog_interface": {
@@ -1254,7 +1403,8 @@
         "auto_accept": true,
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
-        "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}"
+        "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}"
       },
       "servicecatalog_appregistry_interface": {
         "count": "${contains(var.enabled_interface_endpoints, \"servicecatalog-appregistry\") ? 1 : 0}",
@@ -1265,6 +1415,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.servicecatalog-appregistry), null)}"
       },
       "sms_interface": {
@@ -1275,7 +1426,8 @@
         "auto_accept": true,
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
-        "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}"
+        "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}"
       },
       "sms_fips_interface": {
         "count": "${contains(var.enabled_interface_endpoints, \"sms-fips\") ? 1 : 0}",
@@ -1285,7 +1437,8 @@
         "auto_accept": true,
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
-        "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}"
+        "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}"
       },
       "snow_device_management_interface": {
         "count": "${contains(var.enabled_interface_endpoints, \"snow-device-management\") ? 1 : 0}",
@@ -1296,6 +1449,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.snow-device-management), null)}"
       },
       "sns_interface": {
@@ -1307,6 +1461,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.sns), null)}"
       },
       "sqs_interface": {
@@ -1318,6 +1473,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.sqs), null)}"
       },
       "ssm_interface": {
@@ -1329,6 +1485,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.ssm), null)}"
       },
       "ssmmessages_interface": {
@@ -1340,6 +1497,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.ssmmessages), null)}"
       },
       "states_interface": {
@@ -1351,6 +1509,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.states), null)}"
       },
       "storagegateway_interface": {
@@ -1361,7 +1520,8 @@
         "auto_accept": true,
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
-        "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}"
+        "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}"
       },
       "sts_interface": {
         "count": "${contains(var.enabled_interface_endpoints, \"sts\") ? 1 : 0}",
@@ -1372,6 +1532,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.sts), null)}"
       },
       "synthetics_interface": {
@@ -1383,6 +1544,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.synthetics), null)}"
       },
       "textract_interface": {
@@ -1394,6 +1556,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.textract), null)}"
       },
       "textract_fips_interface": {
@@ -1405,6 +1568,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.textract-fips), null)}"
       },
       "transcribe_interface": {
@@ -1416,6 +1580,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.transcribe), null)}"
       },
       "transcribestreaming_interface": {
@@ -1427,6 +1592,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.transcribestreaming), null)}"
       },
       "transfer_interface": {
@@ -1437,7 +1603,8 @@
         "auto_accept": true,
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
-        "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}"
+        "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}"
       },
       "transfer_server_interface": {
         "count": "${contains(var.enabled_interface_endpoints, \"transfer_server\") ? 1 : 0}",
@@ -1447,7 +1614,20 @@
         "auto_accept": true,
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
-        "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}"
+        "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}"
+      },
+      "voiceid_interface": {
+        "count": "${contains(var.enabled_interface_endpoints, \"voiceid\") ? 1 : 0}",
+        "service_name": "${replace(\"com.amazonaws.<REGION>.voiceid\", \"<REGION>\", data.aws_region.current.name)}",
+        "vpc_endpoint_type": "Interface",
+        "tags": "${var.tags}",
+        "auto_accept": true,
+        "vpc_id": "${var.vpc_id}",
+        "security_group_ids": "${local.sg_ids}",
+        "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
+        "policy": "${try(jsonencode(var.interface_endpoint_policies.voiceid), null)}"
       },
       "workspaces_interface": {
         "count": "${contains(var.enabled_interface_endpoints, \"workspaces\") ? 1 : 0}",
@@ -1458,6 +1638,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.workspaces), null)}"
       },
       "xray_interface": {
@@ -1469,6 +1650,7 @@
         "vpc_id": "${var.vpc_id}",
         "security_group_ids": "${local.sg_ids}",
         "subnet_ids": "${length(var.subnet_ids) > 0 ? var.subnet_ids : null}",
+        "private_dns_enabled": "${var.private_dns_enabled}",
         "policy": "${try(jsonencode(var.interface_endpoint_policies.xray), null)}"
       },
       "dynamodb_gateway": {
