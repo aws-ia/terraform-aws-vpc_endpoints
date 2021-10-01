@@ -10,5 +10,5 @@ output "gateway_endpoints" {
 
 output "security_group_ids" {
   description = "List of security group ID's that interface endpoints are attached to"
-  value = local.sg_ids
+  value       = local.sg_ids
 }

@@ -16,8 +16,8 @@ provider "aws" {
 }
 
 module "my_endpoints" {
-  source = "../../"
-  vpc_id = var.vpc_id
+  source                      = "../../"
+  vpc_id                      = var.vpc_id
   enabled_interface_endpoints = ["sts", "s3"]
 }
 

@@ -1,3 +1,24 @@
+terraform {
+  required_version = ">= 1.0.5"
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = ">= 3.49.0"
+    }
+  }
+}
+
+data "aws_region" "current" {}
+
+data "aws_vpc" "selected" {
+  id = var.vpc_id
+}
+
+locals {
+  sg_count = length(var.security_group_ids) == 0 && length(var.enabled_interface_endpoints) > 0 ? 1 : 0
+  sg_ids   = local.sg_count == 1 ? [resource.aws_security_group.endpoints[0].id] : var.security_group_ids
+}
+
 resource "aws_security_group" "endpoints" {
   count       = local.sg_count
   name        = "vpc_endpoints"

@@ -16,10 +16,9 @@ VALIDATION_ERROR_MESSAGE = "Endpoint names can only contain one or more of the f
 
 def generate_tf_json(endpoints):
     tf_resources_template = get_template("main")
-    tf_locals_template = get_template("locals")
     tf_variables_template = get_template("variables")
     tf_endpoints = tf_resources_template['resource']['aws_vpc_endpoint']
-    tf_locals = tf_locals_template['locals']
+    tf_locals = tf_resources_template['locals']
     tf_variables = tf_variables_template['variable']
     allowed_policy_keys = {"Interface": set(), "Gateway": set()}
     available_endpoints = {"Interface": set(), "Gateway": set()}
@@ -27,9 +26,8 @@ def generate_tf_json(endpoints):
         for name, ep in eps.items():
             parse_endpoint(name, endpoint_type, tf_endpoints, tf_locals, ep, available_endpoints, allowed_policy_keys)
         create_tf_variables(endpoint_type, available_endpoints, tf_variables)
-    write_tf('generated_vpc_endpoint_resources', tf_resources_template)
-    write_tf('generated_locals', tf_locals_template)
-    write_tf('generated_variables', tf_variables_template)
+    write_tf('main_generated', tf_resources_template)
+    write_tf('variables_generated', tf_variables_template)
 
 
 def get_available_endpoints(session=boto3):
