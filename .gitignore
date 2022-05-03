@@ -39,3 +39,6 @@ build/bin/
 
 # test report
 test/test_report.html
+
+go.mod
+go.sum
