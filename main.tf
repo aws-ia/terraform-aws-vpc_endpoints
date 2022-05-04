@@ -24,6 +24,6 @@ resource "aws_security_group_rule" "endpoints_allow_ingress_tcp443_from_vpc_cidr
   to_port           = 443
   protocol          = "tcp"
   cidr_blocks       = [data.aws_vpc.selected.cidr_block]
-  ipv6_cidr_blocks  = data.aws_vpc.selected.ipv6_cidr_block != null ? [data.aws_vpc.selected.ipv6_cidr_block] : null
+  ipv6_cidr_blocks  = data.aws_vpc.selected.ipv6_cidr_block != "" ? [data.aws_vpc.selected.ipv6_cidr_block] : null
   security_group_id = aws_security_group.endpoints[count.index].id
 }
